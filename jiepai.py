@@ -1,7 +1,9 @@
+# coding:utf-8
 import re
 import json
 import time
 import random
+import sys
 
 from pathlib import Path
 from urllib import parse
@@ -102,7 +104,8 @@ def save_photo(photo_url, save_dir, timeout=10):
 if __name__ == '__main__':
     ongoing = True
     offset = 0  # 请求的偏移量，每次累加 20
-    root_dir = _create_dir('E:\jiepai')  # 保存图片的根目录
+    #root_dir = _create_dir('E:\jiepai')  # 保存图片的根目录
+    root_dir = _create_dir('./examples')  # 改为相当路径
     request_headers = {
         'Referer': 'http://www.toutiao.com/search/?keyword=%E8%A1%97%E6%8B%8D',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36'
@@ -160,6 +163,9 @@ if __name__ == '__main__':
                 continue
             except error.HTTPError:
                 continue
+            except KeyboardInterrupt:  # CTRL+C 退出程序
+                print("你已经使用CTRL+C结束了程序。")
+                sys.exit()
 
         # 一次请求处理完毕，将偏移量加 20，继续获取新的 20 篇文章。
         offset += 20
